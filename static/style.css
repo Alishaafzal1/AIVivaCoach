@@ -96,7 +96,14 @@ h1, h2, h3 {
 h1.display-title {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 2.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.subheading {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-light);
+  margin-bottom: 1.25rem;
 }
 
 .subtitle {
