@@ -1,0 +1,6 @@
+{
+  "name": "Viva Coach AI",
+  "description": "AI-powered university viva preparation and exam simulation with interactive conceptual Q&A and Gemini instant feedback.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

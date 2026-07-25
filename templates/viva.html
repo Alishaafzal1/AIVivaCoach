@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question {{ current_index }}/{{ total_questions }} - Viva Coach AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="top-nav">
+        <a href="{{ url_for('home') }}" class="brand-logo">
+            ⚡ Viva Coach AI
+        </a>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <span class="tag">{{ subject_code }}: {{ subject_name }}</span>
+            <span class="tag" style="background: var(--accent-color); color: white;">Question {{ current_index }} of {{ total_questions }}</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <div class="viva-header">
+                <div>
+                    <h2 style="font-size: 1.2rem; color: var(--text-muted);">Examiner Prompt</h2>
+                </div>
+                <div style="font-size: 0.875rem; font-weight: 700; color: var(--accent-color);">
+                    ⏱️ Conceptual Round
+                </div>
+            </div>
+
+            <div class="question-box">
+                <div class="question-text">
+                    "{{ question }}"
+                </div>
+            </div>
+
+            {% if feedback %}
+                <div class="feedback-card" style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; margin-top: 1.5rem; animation: fadeIn 0.3s ease;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.75rem;">
+                        <h3 style="margin: 0; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+                            <span>✨ Examiner Evaluation</span>
+                        </h3>
+                        <div style="font-size: 1.25rem; font-weight: 800; background: {% if feedback.score >= 8 %}var(--success-light){% elif feedback.score >= 5 %}var(--warning-light){% else %}var(--danger-light){% endif %}; color: {% if feedback.score >= 8 %}var(--success-color){% elif feedback.score >= 5 %}var(--warning-color){% else %}var(--danger-color){% endif %}; padding: 0.35rem 1rem; border-radius: 99px;">
+                            {{ feedback.score }} / 10
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.25rem;">
+                        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">Your Recorded Answer</div>
+                        <div style="background: white; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">
+                            "{{ answer }}"
+                        </div>
+                    </div>
+
+                    {% if feedback.missing_concepts and feedback.missing_concepts|length > 0 %}
+                        <div style="margin-bottom: 1.25rem;">
+                            <div style="font-size: 0.8rem; font-weight: 700; color: #991b1b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Critical Missed Concepts</div>
+                            <div style="background: var(--danger-light); padding: 1rem; border-radius: var(--radius-sm); border-left: 4px solid var(--danger-color);">
+                                <ul style="list-style-type: disc; padding-left: 1.25rem; margin: 0; color: #7f1d1d; font-size: 0.9rem; line-height: 1.7; font-weight: 500;">
+                                    {% for concept in feedback.missing_concepts %}
+                                        <li>{{ concept }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div style="margin-bottom: 1.75rem;">
+                        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;">Examiner Advice &amp; Tip</div>
+                        <div style="background: white; padding: 1rem; border-radius: var(--radius-sm); border-left: 4px solid var(--accent-color); font-size: 0.95rem; color: var(--text-main); font-weight: 500; line-height: 1.6;">
+                            💡 {{ feedback.suggestion }}
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end;">
+                        <a href="{{ url_for('next_question') }}" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.05rem; text-decoration: none; display: inline-block;">
+                            {% if current_index < 5 %}Next Question (Round {{ current_index + 1 }} of 5) ➔{% else %}View Final Diagnostic Report 🏆 ➔{% endif %}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <form action="{{ url_for('viva') }}" method="POST" id="viva-form">
+                    <div class="form-group">
+                        <label for="answer" style="display: block; margin-bottom: 0.5rem;">Your Conceptual Response</label>
+                        <textarea name="answer" id="answer" placeholder="Type your technical explanation and conceptual answer here..." rows="6" required autofocus></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                        <button type="submit" class="btn btn-primary" id="submit-btn" style="padding: 1rem 2rem; font-size: 1rem;">
+                            Submit Answer &amp; Get AI Grade ➔
+                        </button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer>
+        Viva Coach AI &bull; Type your complete conceptual explanation below
+    </footer>
+</body>
+</html>

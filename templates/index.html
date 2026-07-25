@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viva Coach AI - University Examination Simulator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="top-nav">
+        <a href="{{ url_for('home') }}" class="brand-logo">
+            ⚡ Viva Coach AI
+            <span class="badge">Gemini 1.5 Powered</span>
+        </a>
+        <div style="font-size: 0.875rem; color: var(--text-muted); font-weight: 600;">
+            🎓 Oral Exam Confidence Trainer
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <h1 class="display-title">Conquer University Oral Exams</h1>
+            <p class="subtitle">
+                You know the course material, but viva anxiety can freeze even the top students. Practice under realistic examination pressure with real-time conceptual questions and instant Gemini AI feedback.
+            </p>
+
+            <form action="{{ url_for('home') }}" method="POST">
+                <div class="form-group">
+                    <label for="subject">Select Examination Subject</label>
+                    <select name="subject" id="subject" required>
+                        {% for code, name in subjects.items() %}
+                            <option value="{{ code }}">{{ code }} - {{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div style="background: var(--bg-subtle); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
+                    <h3 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-main);">📌 How It Works</h3>
+                    <ul style="padding-left: 1.25rem; font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+                        <li>You will be asked <strong>5 high-intensity conceptual questions</strong>.</li>
+                        <li>Type your comprehensive conceptual explanation in the answer box.</li>
+                        <li>Receive instant AI grading (Score out of 10, Missing Concepts, and Expert Tip).</li>
+                        <li>Get a final personalized report highlighting your weak theoretical topics.</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 1rem;">
+                    🚀 Start Viva Simulation
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        Viva Coach AI &bull; Built with Python Flask &amp; Google Gemini 1.5 Flash &bull; Ready for Vercel Deployment
+    </footer>
+</body>
+</html>

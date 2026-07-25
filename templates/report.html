@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Viva Diagnostic Report - Viva Coach AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="top-nav">
+        <a href="{{ url_for('home') }}" class="brand-logo">
+            ⚡ Viva Coach AI
+        </a>
+        <div style="font-size: 0.9rem; font-weight: 700; color: var(--accent-color);">
+            🏆 Final Evaluation Report
+        </div>
+    </header>
+
+    <main class="container" style="max-width: 900px;">
+        <div class="card">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <span class="tag" style="font-size: 1rem; margin-bottom: 0.75rem; display: inline-block;">{{ subject_code }}: {{ subject_name }}</span>
+                <h1 class="display-title" style="margin-bottom: 0.5rem;">Simulation Summary</h1>
+                <p class="subtitle" style="margin-bottom: 0;">Here is how you performed under university examination conditions.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value">{{ avg_score }} / 10</div>
+                    <div class="stat-label">Average Viva Score</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">{{ total_score }} / {{ max_score }}</div>
+                    <div class="stat-label">Total Cumulative Points</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">{{ qa_summary|length }}</div>
+                    <div class="stat-label">Questions Completed</div>
+                </div>
+            </div>
+
+            <div class="weak-topics-box">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <span style="font-size: 1.5rem;">🎯</span>
+                    <h3 style="margin-bottom: 0; font-size: 1.15rem;">Priority Weak Topics for Review</h3>
+                </div>
+                <p style="font-size: 0.875rem; color: #78350f; margin-bottom: 1rem;">
+                    Based on concepts missed during your answers, focus your study sessions on these theoretical areas before your university viva:
+                </p>
+                {% if weak_topics and weak_topics|length > 0 %}
+                    <ul style="list-style-type: disc; padding-left: 1.5rem; color: #92400e; font-weight: 600; line-height: 1.8;">
+                        {% for topic in weak_topics %}
+                            <li>{{ topic }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div style="color: #065f46; background: var(--success-light); padding: 1rem; border-radius: 8px; font-weight: 600;">
+                        🌟 Outstanding performance! No critical weak topics identified. Keep refining your articulation!
+                    </div>
+                {% endif %}
+            </div>
+
+            <h2 style="font-size: 1.35rem; margin-bottom: 1.25rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+                📋 Detailed Question &amp; Answer Analysis
+            </h2>
+
+            <div style="margin-bottom: 2.5rem;">
+                {% for item in qa_summary %}
+                    <div class="qa-item">
+                        <div class="qa-header">
+                            <span style="color: var(--accent-color);">Q{{ item.num }}. "{{ item.question }}"</span>
+                            <span style="font-weight: 800; {% if item.score >= 8 %}color: var(--success-color);{% elif item.score >= 5 %}color: var(--warning-color);{% else %}color: var(--danger-color);{% endif %}">
+                                {{ item.score }}/10
+                            </span>
+                        </div>
+                        <div style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.75rem; padding-left: 1rem; border-left: 2px solid var(--border-color);">
+                            <strong>Your Answer:</strong> "{{ item.answer }}"
+                        </div>
+                        {% if item.missing and item.missing|length > 0 %}
+                            <div style="font-size: 0.85rem; margin-bottom: 0.5rem;">
+                                <strong style="color: #991b1b;">Missed Concepts:</strong>
+                                {% for m in item.missing %}
+                                    <span style="background: var(--danger-light); color: #991b1b; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.35rem; display: inline-block; margin-bottom: 0.25rem;">{{ m }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div style="font-size: 0.875rem; background: var(--bg-subtle); padding: 0.75rem; border-radius: 6px; color: var(--text-main);">
+                            💡 <strong>Tip:</strong> {{ item.suggestion }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div style="text-align: center;">
+                <a href="{{ url_for('home') }}" class="btn btn-primary" style="font-size: 1.15rem; padding: 1rem 2.5rem;">
+                    🔄 Start Another Viva Session
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        Viva Coach AI &bull; Practice makes perfect &bull; Powered by Google Gemini 1.5 Flash
+    </footer>
+</body>
+</html>
