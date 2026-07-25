@@ -4,7 +4,7 @@
 Students know the material but panic during university vivas and oral examinations. When put on the spot by professors, even top-performing students freeze, struggle to articulate concepts concisely, and lose confidence. There is a lack of realistic, high-pressure practice environments that simulate strict university oral examinations with real-time feedback.
 
 ## Live Demo URL
-- **Vercel Production Deployment:** [https://ai-viva-coach-zi5e.vercel.app/]*
+- **Vercel Production Deployment:** [https://ai-viva-coach-zi5e.vercel.app/](https://ai-viva-coach-zi5e.vercel.app/)
 - **AI Studio Interactive Preview:** Hosted live in Google AI Studio Build on port 3000.
 
 ## Key Features
