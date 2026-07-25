@@ -16,7 +16,7 @@ Students know the material but panic during university vivas and oral examinatio
 6. **Robust Offline & Fallback Engine:** Includes built-in conceptual questions and heuristic grading fallbacks to ensure zero downtime or crashes during network interruptions.
 
 ## How the AI Works + Show the 2 Prompts
-Viva Coach AI utilizes Google Gemini 1.5 Flash (via the `google-generativeai` library in Python and `@google/genai` in TypeScript) to simulate both the strict university professor asking conceptual questions and the examiner grading answers.
+Viva Coach AI utilizes Google Gemini 1.5 Flash via the `google-generativeai` library in Python to simulate both the strict university professor asking conceptual questions and the examiner grading answers.
 
 ### PROMPT 1: `QUESTION_GENERATOR`
 Used to generate targeted, concise conceptual viva questions:
