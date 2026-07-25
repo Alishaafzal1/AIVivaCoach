@@ -4,7 +4,7 @@
 Students know the material but panic during university vivas and oral examinations. When put on the spot by professors, even top-performing students freeze, struggle to articulate concepts concisely, and lose confidence. There is a lack of realistic, high-pressure practice environments that simulate strict university oral examinations with real-time feedback.
 
 ## Live Demo URL
-- **Vercel Production Deployment:** [https://viva-coach-ai.vercel.app](https://viva-coach-ai.vercel.app) *(Deploy your own instance using the included `vercel.json`!)*
+- **Vercel Production Deployment:** [https://ai-viva-coach-zi5e.vercel.app/]*
 - **AI Studio Interactive Preview:** Hosted live in Google AI Studio Build on port 3000.
 
 ## Key Features
@@ -33,49 +33,42 @@ Return ONLY a valid JSON object with keys: score (int 0-10), missing_concepts (l
 
 ## Tech Stack
 - **Backend Framework:** Python 3.10+, Flask 3.0, Gunicorn, Werkzeug
-- **AI Engine:** Google Gemini 1.5 Flash via `google-generativeai` (read dynamically from `os.environ.get("GEMINI_API_KEY")`)
-- **Frontend / Client:** HTML5, CSS3 (Modern Responsive UI), Vanilla JavaScript (Clean Text Input)
-- **Deployment & Serverless:** Vercel (@vercel/python builder), Gunicorn WSGI adapter
-- **Interactive Studio Preview:** Vite, React 19, TypeScript, Express (Node.js full-stack adapter on Port 3000)
+- **AI Engine:** Google Gemini 1.5 Flash via `google-generativeai`
+- **Frontend / Client:** HTML5, CSS3, Vanilla JavaScript 
+- **Deployment & Serverless:** Vercel `@vercel/python` builder
 
 ## Screenshots
 ### 1. Subject Selection Dashboard
 *Clean, high-contrast dashboard enabling seamless selection across 6 core university subjects.*
-```text
-+-------------------------------------------------------------+
-| ⚡ Viva Coach AI        [Gemini 1.5 Powered]                |
-|                                                             |
-| Conquer University Oral Exams                               |
-| [ Select Subject: TOA - Theory of Automata       v ]        |
-| [ 🚀 Start Viva Simulation                         ]        |
-+-------------------------------------------------------------+
-```
+
+<img width="958" height="472" alt="image" src="https://github.com/user-attachments/assets/cdfa20a3-d938-4177-90d8-72bef3cfbc31" />
+
+<img width="959" height="498" alt="image" src="https://github.com/user-attachments/assets/dd7aabfb-fe1d-4990-8d94-4926039e98c6" />
+
+
 
 ### 2. Live Viva Question & Interactive Q&A
 *Presents 1 question at a time with clean, focused text response capture.*
-```text
-+-------------------------------------------------------------+
-| Question 2 of 5                                   ⏱️ Round  |
-|                                                             |
-| "What is the significance of the Pumping Lemma for regular  |
-|  languages?"                                                |
-|                                                             |
-| [ Your Answer: It is used to prove a language is not regular]|
-|                                      [ Submit Answer ➔ ]    |
-+-------------------------------------------------------------+
-```
+
+<img width="959" height="440" alt="image" src="https://github.com/user-attachments/assets/f187f74e-fcba-4732-aa04-3f1246d8707c" />
+
+<img width="957" height="462" alt="image" src="https://github.com/user-attachments/assets/7ca94b0d-b55b-45ba-8fa8-474ac914591d" />
+
 
 ### 3. Instant Grader & Final Diagnostic Report
 *Instant 0-10 scoring, missing concept tags, and weak topic aggregation.*
-```text
-+-------------------------------------------------------------+
-| Average Score: 8.4 / 10     Points: 42 / 50                 |
-|                                                             |
-| 🎯 Priority Weak Topics for Review:                         |
-|  • Chomsky hierarchy Type-1 boundary conditions             |
-|  • B+ Tree index page splitting mechanics                   |
-+-------------------------------------------------------------+
-```
+
+<img width="959" height="497" alt="image" src="https://github.com/user-attachments/assets/cab49bc0-641a-4d6a-842e-bab7d51231ca" />
+
+<img width="947" height="494" alt="image" src="https://github.com/user-attachments/assets/d79bfd99-be87-42e1-85ab-5651184afb32" />
+
+<img width="959" height="469" alt="image" src="https://github.com/user-attachments/assets/050cfc0b-0d0e-4901-8a32-101a2b041c84" />
+
+<img width="959" height="461" alt="image" src="https://github.com/user-attachments/assets/504cb260-3277-44ec-b3e6-68d441be7b95" />
+
+<img width="956" height="477" alt="image" src="https://github.com/user-attachments/assets/47b19c5a-7057-49a0-a99b-16ad5fb61dea" />
+
+
 
 ## How to Run Locally
 1. **Clone the repository and enter the directory:**
