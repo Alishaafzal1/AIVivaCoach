@@ -178,6 +178,18 @@ textarea {
   background-color: #e2e8f0;
 }
 
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
 .viva-header {
   display: flex;
   justify-content: space-between;

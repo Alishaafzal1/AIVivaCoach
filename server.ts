@@ -248,6 +248,7 @@ app.all("/viva", async (req, res) => {
       .replace(/\{\{ url_for\('home'\) \}\}/g, "/")
       .replace(/\{\{ url_for\('viva'\) \}\}/g, "/viva")
       .replace(/\{\{ url_for\('next_question'\) \}\}/g, "/next_question")
+      .replace(/\{\{ url_for\('report'\) \}\}/g, "/report")
       .replace(/\{\{ subject_code \}\}/g, previewSession.subject)
       .replace(/\{\{ subject_name \}\}/g, SUBJECT_NAMES[previewSession.subject] || previewSession.subject)
       .replace(/\{\{ current_index \}\}/g, idx.toString())
@@ -305,29 +306,37 @@ app.all("/next_question", (req, res) => {
 
 app.get("/report", (req, res) => {
   try {
-    const feedbacks = previewSession.feedbacks;
-    const questions = previewSession.questions;
-    const answers = previewSession.answers;
-    const subject_code = previewSession.subject;
+    const feedbacks = previewSession.feedbacks || [];
+    const questions = previewSession.questions || [];
+    const answers = previewSession.answers || [];
+    const subject_code = previewSession.subject || "TOA";
     const subject_name = SUBJECT_NAMES[subject_code] || subject_code;
 
-    if (!feedbacks || feedbacks.length === 0) {
-      return res.redirect("/");
-    }
-
-    const total_score = feedbacks.reduce((acc, f) => acc + (f?.score || 0), 0);
-    const avg_score = (total_score / feedbacks.length).toFixed(1);
-    
+    let total_score = 0;
+    let avg_score = "0";
+    let max_score = 0;
     let weak_topics: string[] = [];
-    feedbacks.forEach((f) => {
-      if ((f?.score || 10) <= 8) {
-        (f?.missing_concepts || []).forEach((mc: string) => {
-          if (mc && !weak_topics.includes(mc)) weak_topics.push(mc);
-        });
+
+    if (!feedbacks || feedbacks.length === 0) {
+      total_score = 0;
+      avg_score = "0";
+      max_score = 0;
+      weak_topics = ["No data yet"];
+    } else {
+      total_score = feedbacks.reduce((acc, f) => acc + (f?.score || 0), 0);
+      avg_score = (total_score / feedbacks.length).toFixed(1);
+      max_score = feedbacks.length * 10;
+      
+      feedbacks.forEach((f) => {
+        if ((f?.score || 10) <= 8) {
+          (f?.missing_concepts || []).forEach((mc: string) => {
+            if (mc && !weak_topics.includes(mc)) weak_topics.push(mc);
+          });
+        }
+      });
+      if (weak_topics.length === 0) {
+        weak_topics = ["Advanced Distributed System Architecture", "Low-Latency Kernel Optimization", "High-Concurrency Concurrency Control"];
       }
-    });
-    if (weak_topics.length === 0) {
-      weak_topics = ["Advanced Distributed System Architecture", "Low-Latency Kernel Optimization", "High-Concurrency Concurrency Control"];
     }
 
     let html = fs.readFileSync(path.join(process.cwd(), "templates/report.html"), "utf-8");
@@ -338,7 +347,7 @@ app.get("/report", (req, res) => {
       .replace(/\{\{ subject_name \}\}/g, subject_name)
       .replace(/\{\{ avg_score \}\}/g, avg_score)
       .replace(/\{\{ total_score \}\}/g, total_score.toString())
-      .replace(/\{\{ max_score \}\}/g, (feedbacks.length * 10).toString())
+      .replace(/\{\{ max_score \}\}/g, max_score.toString())
       .replace(/\{\{ qa_summary\|length \}\}/g, feedbacks.length.toString());
 
     const wtHtml = weak_topics.map((t) => `<li>${t}</li>`).join("");

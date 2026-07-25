@@ -238,47 +238,52 @@ def next_question():
 
 @app.route('/report', methods=['GET'])
 def report():
-    """Final Report Route: Displays score summary and list of weak topics after 5 questions."""
+    """Final Report Route: Displays score summary and list of weak topics."""
     feedbacks = session.get('feedbacks', [])
     questions = session.get('questions', [])
     answers = session.get('answers', [])
     subject_code = session.get('subject', 'TOA')
     subject_name = SUBJECTS.get(subject_code, subject_code)
     
-    if not feedbacks:
-        return redirect(url_for('home'))
+    if not feedbacks or len(feedbacks) == 0:
+        total_score = 0
+        avg_score = 0
+        max_score = 0
+        weak_topics = ["No data yet"]
+        qa_summary = []
+    else:
+        total_score = sum(f.get('score', 0) for f in feedbacks if f)
+        avg_score = round(total_score / len(feedbacks), 1)
+        max_score = len(feedbacks) * 10
         
-    total_score = sum(f.get('score', 0) for f in feedbacks)
-    avg_score = round(total_score / len(feedbacks), 1)
-    
-    # Extract weak topics from questions where score was 8 or lower
-    weak_topics = []
-    for f in feedbacks:
-        if f.get('score', 10) <= 8:
-            for mc in f.get('missing_concepts', []):
-                if mc and mc not in weak_topics:
-                    weak_topics.append(mc)
-                    
-    # If student aced everything, provide advanced topics
-    if not weak_topics:
-        weak_topics = ["Advanced Distributed System Architecture", "Low-Latency Kernel Optimization", "High-Concurrency Concurrency Control"]
-        
-    qa_summary = []
-    for i in range(len(feedbacks)):
-        qa_summary.append({
-            "num": i + 1,
-            "question": questions[i] if i < len(questions) else f"Question {i+1}",
-            "answer": answers[i] if i < len(answers) else "No answer recorded",
-            "score": feedbacks[i].get('score', 0),
-            "missing": feedbacks[i].get('missing_concepts', []),
-            "suggestion": feedbacks[i].get('suggestion', '')
-        })
+        # Extract weak topics from questions where score was 8 or lower
+        weak_topics = []
+        for f in feedbacks:
+            if f and f.get('score', 10) <= 8:
+                for mc in f.get('missing_concepts', []):
+                    if mc and mc not in weak_topics:
+                        weak_topics.append(mc)
+                        
+        # If student aced everything, provide advanced topics
+        if not weak_topics:
+            weak_topics = ["Advanced Distributed System Architecture", "Low-Latency Kernel Optimization", "High-Concurrency Concurrency Control"]
+            
+        qa_summary = []
+        for i in range(len(feedbacks)):
+            qa_summary.append({
+                "num": i + 1,
+                "question": questions[i] if i < len(questions) else f"Question {i+1}",
+                "answer": answers[i] if i < len(answers) else "No answer recorded",
+                "score": feedbacks[i].get('score', 0) if feedbacks[i] else 0,
+                "missing": feedbacks[i].get('missing_concepts', []) if feedbacks[i] else [],
+                "suggestion": feedbacks[i].get('suggestion', '') if feedbacks[i] else ''
+            })
         
     return render_template('report.html',
                            subject_code=subject_code,
                            subject_name=subject_name,
                            total_score=total_score,
-                           max_score=len(feedbacks) * 10,
+                           max_score=max_score,
                            avg_score=avg_score,
                            weak_topics=weak_topics,
                            qa_summary=qa_summary)
